@@ -143,20 +143,20 @@ var POP = {
         POP.Bubble = function() {
 
             this.type = 'bubble';
-            this.x = 100;
-            this.r = 5;                // the radius of the bubble
-            this.y = POP.HEIGHT + 100; // make sure it starts off screen
+            this.x = Math.random() * POP.WIDTH;
+            this.r = 20;                // the radius of the bubble
+            this.y = Math.random() * POP.HEIGHT; // make sure it starts off screen
             this.remove = false;
 
             this.update = function() {
 
                 // move up the screen by 1 pixel
-                this.y -= 1;
+                //this.y -= 1;
 
                 // if off screen, flag for removal
-                if (this.y < -10) {
+                /* if (this.y < -10) {
                     this.remove = true;
-                }
+                } */
 
             };
 
