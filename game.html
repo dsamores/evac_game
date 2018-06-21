@@ -32,6 +32,14 @@ var POP = {
     currentHeight:  null,
     canvas: null,
     ctx:  null,
+    
+ 	// let's keep track of scale
+    // along with all initial declarations
+    // at the start of the program
+    scale:  1,
+    // the position of the canvas
+    // in relation to the screen
+    offset: {top: 0, left: 0},
 
     init: function() {
 
@@ -62,11 +70,55 @@ var POP = {
         // we're ready to resize
         POP.resize();
         
-     // include this at the end of POP.init function
+     	// include this at the end of POP.init function
         POP.Draw.clear();
-        POP.Draw.rect(120,120,150,150, 'green');
+        /* POP.Draw.rect(120,120,150,150, 'green');
         POP.Draw.circle(100, 100, 50, 'rgba(255,0,0,0.5)');
-        POP.Draw.text('Hello World', 100, 100, 10, '#000');
+        POP.Draw.text('Hello World', 100, 100, 10, '#000'); */
+        
+	     // + add this at the bottom of your code,
+	     // before the window.addEventListeners
+	     POP.Input = {
+	
+	         x: 0,
+	         y: 0,
+	         tapped :false,
+	
+	         set: function(data) {
+	        	 this.x = (data.pageX - POP.offset.left) / POP.scale;
+	        	 this.y = (data.pageY - POP.offset.top) / POP.scale;
+	             this.tapped = true; 
+	
+	             POP.Draw.circle(this.x, this.y, 10, 'red');
+	         }
+	
+	     };
+        
+     	// listen for clicks
+        window.addEventListener('click', function(e) {
+            e.preventDefault();
+            POP.Input.set(e);
+        }, false);
+
+        // listen for touches
+        window.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            // the event object has an array
+            // named touches; we just want
+            // the first touch
+            POP.Input.set(e.touches[0]);
+        }, false);
+        window.addEventListener('touchmove', function(e) {
+            // we're not interested in this,
+            // but prevent default behaviour
+            // so the screen doesn't scroll
+            // or zoom
+            e.preventDefault();
+        }, false);
+        window.addEventListener('touchend', function(e) {
+            // as above
+            e.preventDefault();
+        }, false);
 
     },
 
@@ -96,6 +148,11 @@ var POP = {
         window.setTimeout(function() {
                 window.scrollTo(0,1);
         }, 1);
+        
+     	// add this to the resize function.
+        POP.scale = POP.currentWidth / POP.WIDTH;
+        POP.offset.top = POP.canvas.offsetTop;
+        POP.offset.left = POP.canvas.offsetLeft;
     }
 
 };
