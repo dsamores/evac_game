@@ -84,7 +84,8 @@ var POP = {
             };
 
             this.render = function() {
-                POP.Draw.text(USER.points, 50, 50, 20, '#000');
+                POP.Draw.rect(0, 0, POP.WIDTH, 50, '#000');
+                POP.Draw.text(USER.points, POP.WIDTH - 50, 30, 20, '#fff');
             };
 
         };
@@ -137,8 +138,8 @@ var POP = {
 
             this.type = 'bubble';
             this.r = 20;
-            this.x = this.r + (POP.WIDTH - 2 * this.r) * Math.random();
-            this.y = this.r + (POP.HEIGHT - 2 * this.r) * Math.random();
+            this.x = 2 * this.r + (POP.WIDTH - 4 * this.r) * Math.random();
+            this.y = 50 + 2 * this.r + (POP.HEIGHT - 50 - 4 * this.r) * Math.random();
             this.remove = false;
             
             this.action = null;
