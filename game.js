@@ -9,6 +9,16 @@ window.requestAnimFrame = (function(){
         };
 })();
 
+var USER = {
+	id: null,
+	points: null,
+
+	init: function(){
+		this.id = 123;
+		this.points = 0;
+	},
+};
+
 
 var POP = {
 
@@ -26,8 +36,11 @@ var POP = {
     nextBubble: 100,
 
     initialTouch: null,
+    touchType: null,
 
     init: function() {
+    	
+    	USER.init();
 
         POP.RATIO = POP.WIDTH / POP.HEIGHT;
         POP.currentWidth = POP.WIDTH;
@@ -183,18 +196,22 @@ var POP = {
             
             if (Math.abs(diffX) > Math.abs(diffY)) {
                 if (diffX > 0) {
-                    POP.Input.set(POP.initialTouch, 'swipe-left');
+                	POP.touchType = 'swipe-left';
+                    //POP.Input.set(POP.initialTouch, 'swipe-left');
                 }
                 else {
-                    POP.Input.set(POP.initialTouch, 'swipe-right');
+                	POP.touchType = 'swipe-right';
+                    //POP.Input.set(POP.initialTouch, 'swipe-right');
                 }  
             }
             else {
                 if (diffY > 0) {
-                    POP.Input.set(POP.initialTouch, 'swipe-up');
+                	POP.touchType = 'swipe-up';
+                    //POP.Input.set(POP.initialTouch, 'swipe-up');
                 }
                 else {
-                    POP.Input.set(POP.initialTouch, 'swipe-down');
+                	POP.touchType = 'swipe-down';
+                    //POP.Input.set(POP.initialTouch, 'swipe-down');
                 }  
             }
              
@@ -203,9 +220,11 @@ var POP = {
         }, {passive: false});
         window.addEventListener('touchend', function(e) {
             e.preventDefault();
-            if(POP.Input.type == null)
+            if(POP.touchType == null)
             	POP.Input.set(e.changedTouches[0], 'tap');
-            POP.swipped = false;
+            else
+            	POP.Input.set(POP.initialTouch, POP.touchType);
+            POP.touchType = null;
         }, {passive: false});
         
         POP.loop();
@@ -258,14 +277,24 @@ var POP = {
 	            checkCollision = true;
 	        }
         }
-    
+        
         for (i = 0; i < POP.entities.length; i += 1) {
 
             if (POP.entities[i].type === 'bubble' && checkCollision) {
                 hit = POP.collides(POP.entities[i], {x: POP.Input.x, y: POP.Input.y, r: 7});
                 
-                if (hit)
+                if (hit){
                 	POP.entities[i].action = POP.Input.type;
+                	switch(POP.Input.type){
+                	case 'tap':
+                		USER.points += 1;
+                		break;
+                	default:
+                		USER.points += 2;
+                		break;
+                	}
+                	console.log(USER.points);
+                }
             }
             POP.entities[i].update();
 
