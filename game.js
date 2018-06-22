@@ -13,7 +13,7 @@ window.requestAnimFrame = (function(){
 var POP = {
 
     WIDTH: 320, 
-    HEIGHT:  480, 
+    HEIGHT:  480,
     RATIO:  null,
     currentWidth:  null,
     currentHeight:  null,
@@ -230,6 +230,11 @@ var POP = {
         POP.scale = POP.currentWidth / POP.WIDTH;
         POP.offset.top = POP.canvas.offsetTop;
         POP.offset.left = POP.canvas.offsetLeft;
+        
+        var map = document.getElementById('mapid');
+
+        map.style.width = POP.currentWidth + 'px';
+        map.style.height = POP.currentHeight + 'px';
     },
 
     update: function() {
@@ -273,12 +278,10 @@ var POP = {
     },
 
     render: function() {
+        
+        POP.Draw.clear();
 
-        var i;
-
-        POP.Draw.rect(0, 0, POP.WIDTH, POP.HEIGHT, '#036');
-
-        for (i = 0; i < POP.entities.length; i += 1) {
+        for (var i = 0; i < POP.entities.length; i += 1) {
             POP.entities[i].render();
         }
 
