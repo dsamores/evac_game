@@ -74,6 +74,21 @@ var POP = {
             }
         };
         
+        POP.Score = function() {
+
+            this.type = 'score';
+            this.remove = false;
+
+            this.update = function() {
+            	
+            };
+
+            this.render = function() {
+                POP.Draw.text(USER.points, 50, 50, 20, '#000');
+            };
+
+        };
+        
         POP.Touch = function(x, y) {
 
             this.type = 'touch';
@@ -197,21 +212,17 @@ var POP = {
             if (Math.abs(diffX) > Math.abs(diffY)) {
                 if (diffX > 0) {
                 	POP.touchType = 'swipe-left';
-                    //POP.Input.set(POP.initialTouch, 'swipe-left');
                 }
                 else {
                 	POP.touchType = 'swipe-right';
-                    //POP.Input.set(POP.initialTouch, 'swipe-right');
                 }  
             }
             else {
                 if (diffY > 0) {
                 	POP.touchType = 'swipe-up';
-                    //POP.Input.set(POP.initialTouch, 'swipe-up');
                 }
                 else {
                 	POP.touchType = 'swipe-down';
-                    //POP.Input.set(POP.initialTouch, 'swipe-down');
                 }  
             }
              
@@ -227,6 +238,7 @@ var POP = {
             POP.touchType = null;
         }, {passive: false});
         
+    	POP.entities.push(new POP.Score());
         POP.loop();
     },
 
@@ -264,8 +276,7 @@ var POP = {
             POP.nextBubble = ( Math.random() * 100 ) + 100;
         }
     
-        var i, 
-            checkCollision = false;
+        var i, checkCollision = false;
     
         if(POP.Input.type != null){
 	        if (POP.Input.type === 'tap') {
@@ -293,7 +304,6 @@ var POP = {
                 		USER.points += 2;
                 		break;
                 	}
-                	console.log(USER.points);
                 }
             }
             POP.entities[i].update();
