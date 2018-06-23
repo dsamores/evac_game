@@ -15,6 +15,7 @@ var GAME = {
 		tap: 1,
 		swipe: 2,
 	},
+	showBubble: false,
 };
 
 var USER = {
@@ -23,13 +24,21 @@ var USER = {
 
 	init: function(){
 		this.id = 123;
-		this.points = 3000;
+		this.points = 5000;
 	},
 };
 
-var x = setInterval(function() {
+setInterval(function() {
 	USER.points -= GAME.points.time;
 }, 1000);
+
+var bubbleInterval = 1000;
+var bubbleTimer = function(){
+	GAME.showBubble = true;
+	setTimeout(bubbleTimer, bubbleInterval * (1 + Math.random()));
+};
+
+setTimeout(bubbleTimer, bubbleInterval * (1 + Math.random()));
 
 
 var POP = {
@@ -45,7 +54,6 @@ var POP = {
     
     scale:  1,
     offset: {top: 0, left: 0},
-    nextBubble: 100,
 
     initialTouch: null,
     touchType: null,
@@ -199,16 +207,16 @@ var POP = {
         };
         
         window.addEventListener('click', function(e) {
-            e.preventDefault();
+            //e.preventDefault();
             POP.Input.set(e, 'tap');
         }, false);
 
         window.addEventListener('touchstart', function(e) {
-            e.preventDefault();
+            //e.preventDefault();
             POP.initialTouch = e.touches[0];
         }, {passive: false});
         window.addEventListener('touchmove', function(e) {
-            e.preventDefault();
+            //e.preventDefault();
             
             if (initialX === null || initialY === null)
                 return;
@@ -243,7 +251,7 @@ var POP = {
             initialY = null;
         }, {passive: false});
         window.addEventListener('touchend', function(e) {
-            e.preventDefault();
+            //e.preventDefault();
             if(POP.touchType == null)
             	POP.Input.set(e.changedTouches[0], 'tap');
             else
@@ -283,10 +291,9 @@ var POP = {
 
     update: function() {
         
-        POP.nextBubble -= 1;
-        if (POP.nextBubble < 0) {
+        if (GAME.showBubble) {
             POP.entities.push(new POP.Bubble());
-            POP.nextBubble = ( Math.random() * 100 ) + 100;
+            GAME.showBubble = false;
         }
     
         var i, checkCollision = false;

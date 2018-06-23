@@ -8,6 +8,7 @@ canvas {
 	margin: 0 auto;
 	z-index: 10;
 	position: absolute;
+	pointer-events: none;
 }
 #mapid { 
 	height: 480px;
