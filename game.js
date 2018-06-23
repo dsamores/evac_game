@@ -9,15 +9,27 @@ window.requestAnimFrame = (function(){
         };
 })();
 
+var GAME = {
+	points: {
+		time: 3,
+		tap: 1,
+		swipe: 2,
+	},
+};
+
 var USER = {
 	id: null,
 	points: null,
 
 	init: function(){
 		this.id = 123;
-		this.points = 0;
+		this.points = 3000;
 	},
 };
+
+var x = setInterval(function() {
+	USER.points -= GAME.points.time;
+}, 1000);
 
 
 var POP = {
@@ -299,10 +311,10 @@ var POP = {
                 	POP.entities[i].action = POP.Input.type;
                 	switch(POP.Input.type){
                 	case 'tap':
-                		USER.points += 1;
+                		USER.points += GAME.points.tap;
                 		break;
                 	default:
-                		USER.points += 2;
+                		USER.points += GAME.points.swipe;
                 		break;
                 	}
                 }
