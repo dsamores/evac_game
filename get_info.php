@@ -7,13 +7,13 @@ function getUser($id=-1){
 		$user = new User(17);
 	}
 	else{
-		$user = User.getUser($id);
+		$user = User::getUser($id);
 	}
 	return $user;
 }
 
-function storeInteractions(){
-	
+function getActiveGame(){
+	return Game::getActiveGame();
 }
 
 $request = htmlspecialchars($_GET["request"]);
@@ -27,11 +27,7 @@ switch ($request){
 		echo json_encode(getUser($_POST["userId"]));
 		break;
 	case 'new_game':
-		echo json_encode(getUser());
-		break;
-	case 'interactions':
-		if(storeInteractions($_POST["interactions"]))
-			echo 'success';
+		echo json_encode(getActiveGame());
 		break;
 	default:
 		echo 'qwerty';

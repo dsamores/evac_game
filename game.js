@@ -15,12 +15,14 @@ function startGame(){
 
 function finishGame(){
 	GAME.stop = true;
-	
+	USER.sendInteractions();
 }
 
 var GAME = {
 	id: null,
 	startTime: null,
+	startLocation: null,
+	finishLocation: null,
 	stop: false,
 	points: {
 		time: 3,
@@ -62,6 +64,15 @@ var USER = {
 		this.id = -1;
 		this.points = 5000;
 		requestFromServer('new_user');
+	},
+	
+	sendInteractions: function(){
+		var data = {
+			userId: USER.id,
+			gameId: GAME.id,
+			interactions: this.interactions,
+		};
+		sendToServer('interactions', JSON.stringify(data));
 	},
 };
 
@@ -273,7 +284,7 @@ var POP = {
         };
         
         window.addEventListener('click', function(e) {
-            POP.Input.set(e, 'tap');
+            //POP.Input.set(e, 'tap');
         }, false);
 
         window.addEventListener('touchstart', function(e) {

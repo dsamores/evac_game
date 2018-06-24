@@ -7,8 +7,11 @@ function requestFromServer(type) {
 	    	USER.id = userInfo.id;
     	}
     	else if(type == 'new_game'){
-	    	var gameInfo = {id: 14};
-	    	GAME.id = gameInfo.id;
+    		var gameInfo = JSON.parse(this.responseText);
+    		GAME.id = parseInt(gameInfo.id);
+    		GAME.startLocation = gameInfo.startLocation;
+    		GAME.finishLocation = gameInfo.endLocation;
+    		addMarkers();
     	}
     }
   };
@@ -20,10 +23,11 @@ function sendToServer(type, data) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-    	console.log('success');
+    	console.log('success:' + this.responseText);
     }
   };
-  xhttp.open("POST", "store_info.php", true);
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.send();
+  xhttp.open("POST", "store_info.php?request=" + type, true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  //console.log('data=asdf' + data);
+  xhttp.send(data);
 }
