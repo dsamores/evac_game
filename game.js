@@ -320,6 +320,7 @@ var POP = {
 
         map.style.width = POP.currentWidth + 'px';
         map.style.height = POP.currentHeight + 'px';
+        mymap.invalidateSize();
     },
 
     update: function() {

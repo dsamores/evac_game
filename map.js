@@ -4,7 +4,7 @@ var MAP = {
 };
 
 
-var mymap = L.map('mapid', {zoomControl: true}).setView([-37.796772, 144.963654], 15);
+var mymap = L.map('mapid', {zoomControl: true, dragging: false}).setView([-37.796772, 144.963654], 15);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFtb3JlcyIsImEiOiJjamlwbDhmbjIweTNuM2tvNzhmOHMyMHc4In0.5J2Vqh0EG8gAVjEWGxnNBw', {
     attribution: '',
