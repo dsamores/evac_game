@@ -143,13 +143,10 @@ var POP = {
             this.remove = false;
 
             this.update = function() {
-                // this.opacity -= this.fade; 
-                // this.remove = (this.opacity < 0) ? true : false;
                 this.remove = true;
             };
 
             this.render = function() {
-                // POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,0,0,'+this.opacity+')');
             };
 
         };
@@ -157,22 +154,37 @@ var POP = {
         POP.Bubble = function() {
 
             this.type = 'bubble';
-            this.r = 20;
-            this.x = 2 * this.r + (POP.WIDTH - 4 * this.r) * Math.random();
-            this.y = 50 + 2 * this.r + (POP.HEIGHT - 50 - 4 * this.r) * Math.random();
+            this.r = 25;
+            this.x = this.r + (POP.WIDTH - 2 * this.r) * Math.random();
+            this.y = 50 +  this.r + (POP.HEIGHT - 50 - 2 * this.r) * Math.random();
             this.remove = false;
             
             this.action = null;
+            this.fade = false;
+            this.opacity = 1;
+            this.fadeRate = 0.05;
+            
+            var self = this;
+            
+            this.run = setTimeout(function(){
+            	self.fade = true;
+            }, 2000);
 
             this.update = function() {
 
-                /* this.y -= 1;
-                if (this.y < -10) {
-                    this.remove = true;
-                } */
+            	if(this.fade){
+                    this.opacity -= this.fadeRate; 
+                    this.remove = (this.opacity < 0) ? true : false;
+            	}
+            	
+            	if(this.action != null){
+            		clearTimeout(this.run);
+            		this.fade = false;
+            	}
                 
-                if(this.action == 'tap')
+                if(this.action == 'tap'){
                 	this.remove = true;
+                }
                 else if(this.action == 'swipe-left'){
                 	this.x -= 10;
                     if (this.x < -10) {
@@ -189,7 +201,7 @@ var POP = {
             };
 
             this.render = function() {
-                POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,255,255,1)');
+                POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,255,255,'+this.opacity+')');
             };
         };
         
