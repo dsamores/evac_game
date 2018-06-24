@@ -36,19 +36,19 @@ var GAME = {
 			points: 1,
 			action: 'tap',
 			text: 'Tap me',
-      image: 'Tapme.png',
+      image: 'images/Tapme.png',
 		},
 		swipeLeft: {
 			points: 2,
 			action: 'swipe-left',
 			text: 'Swipe me',
-      image: 'SwipeLeft.png',
+      image: 'images/SwipeLeft.png',
 		},
 		swipeRight: {
 			points: 2,
 			action: 'swipe-right',
 			text: 'Swipe me',
-      image: 'SwipeRight.png',
+      image: 'images/SwipeRight.png',
 		},
 	},
 	init: function(){
@@ -56,10 +56,10 @@ var GAME = {
 		requestFromServer('new_game');
 	},
   imageTypes: {
-    yellowenvelope: 'yenvelope.png',
-    purpleenvelope: 'penvelope.png',
-    blueenvelope: 'benvelope.png',
-    orangeenvelope: 'oenvelope.png',
+    yellowenvelope: 'images/yenvelope.png',
+    purpleenvelope: 'images/penvelope.png',
+    blueenvelope: 'images/benvelope.png',
+    orangeenvelope: 'images/oenvelope.png',
   },
 };
 
@@ -158,10 +158,10 @@ var POP = {
 
             this.type = 'score';
             this.remove = false;
-            this.idcard = 'idcard.png';
-            this.binocular = 'binoculars.png',
-            this.mail = 'mail.png';
-            this.medal = 'medal.png';
+            this.idcard = 'images/idcard.png';
+            this.binocular = 'images/binoculars.png',
+            this.mail = 'images/mail.png';
+            this.medal = 'images/medal.png';
 
             this.update = function() {
 
