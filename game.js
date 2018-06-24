@@ -40,8 +40,9 @@ var USER = {
 	points: null,
 
 	init: function(){
-		this.id = 123;
+		this.id = -1;
 		this.points = 5000;
+		requestFromServer('new_user');
 	},
 };
 
@@ -240,16 +241,13 @@ var POP = {
         };
         
         window.addEventListener('click', function(e) {
-            //e.preventDefault();
             POP.Input.set(e, 'tap');
         }, false);
 
         window.addEventListener('touchstart', function(e) {
-            //e.preventDefault();
             POP.initialTouch = e.touches[0];
         }, {passive: false});
         window.addEventListener('touchmove', function(e) {
-            //e.preventDefault();
             
             if (initialX === null || initialY === null)
                 return;
@@ -284,7 +282,6 @@ var POP = {
             initialY = null;
         }, {passive: false});
         window.addEventListener('touchend', function(e) {
-            //e.preventDefault();
             if(POP.touchType == null)
             	POP.Input.set(e.changedTouches[0], 'tap');
             else

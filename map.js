@@ -32,8 +32,7 @@ mymap.on("locationfound", function(location) {
 });
 
 mymap.locate({
-    watch: false,
-    locate: true,
+    watch: true,
     setView: false,
     enableHighAccuracy: true
 });
