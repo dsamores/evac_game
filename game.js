@@ -16,6 +16,23 @@ var GAME = {
 		swipe: 2,
 	},
 	showBubble: false,
+	bubbleTypes: {
+		tap: {
+			points: 1,
+			action: 'tap',
+			text: 'Tap me',
+		},
+		swipeLeft: {
+			points: 2,
+			action: 'swipe-left',
+			text: '<- Swipe me',
+		},
+		swipeRight: {
+			points: 2,
+			action: 'swipe-right',
+			text: 'Swipe me ->',
+		},
+	},
 };
 
 var USER = {
@@ -151,19 +168,21 @@ var POP = {
 
         };
         
-        POP.Bubble = function() {
+        POP.Bubble = function(bubbleType) {
 
             this.type = 'bubble';
             this.r = 25;
             this.x = this.r + (POP.WIDTH - 2 * this.r) * Math.random();
             this.y = 50 +  this.r + (POP.HEIGHT - 50 - 2 * this.r) * Math.random();
-            this.remove = false;
-            
-            this.action = null;
-            this.fade = false;
             this.opacity = 1;
             this.fadeRate = 0.05;
             
+            this.properties = bubbleType;
+            
+            this.fade = false;
+            this.remove = false;
+            
+            this.action = null;
             var self = this;
             
             this.run = setTimeout(function(){
@@ -202,6 +221,8 @@ var POP = {
 
             this.render = function() {
                 POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,255,255,'+this.opacity+')');
+                POP.Draw.text(this.properties.text, this.x, this.y - 5, 10, '#000');
+                POP.Draw.text('+' + this.properties.points, this.x, this.y + 5, 10, '#000');
             };
         };
         
@@ -304,7 +325,9 @@ var POP = {
     update: function() {
         
         if (GAME.showBubble) {
-            POP.entities.push(new POP.Bubble());
+        	var keys = Object.keys(GAME.bubbleTypes);
+        	var bubbleType = GAME.bubbleTypes[keys[Math.floor(keys.length * Math.random())]];
+            POP.entities.push(new POP.Bubble(bubbleType));
             GAME.showBubble = false;
         }
     
@@ -324,9 +347,10 @@ var POP = {
         for (i = 0; i < POP.entities.length; i += 1) {
 
             if (POP.entities[i].type === 'bubble' && checkCollision) {
+            	var bubble = POP.entities[i];
                 hit = POP.collides(POP.entities[i], {x: POP.Input.x, y: POP.Input.y, r: 7});
                 
-                if (hit){
+                if (hit && bubble.properties.action == POP.Input.type){
                 	POP.entities[i].action = POP.Input.type;
                 	switch(POP.Input.type){
                 	case 'tap':
@@ -382,7 +406,7 @@ POP.Draw = {
  circle: function(x, y, r, col) {
      POP.ctx.fillStyle = col;
      POP.ctx.beginPath();
-     POP.ctx.arc(x + 5, y + 5, r, 0,  Math.PI * 2, true);
+     POP.ctx.arc(x, y, r, 0,  Math.PI * 2, true);
      POP.ctx.closePath();
      POP.ctx.fill();
  },
@@ -390,7 +414,9 @@ POP.Draw = {
  text: function(string, x, y, size, col) {
      POP.ctx.font = 'bold '+size+'px Monospace';
      POP.ctx.fillStyle = col;
-     POP.ctx.fillText(string, x, y);
+     POP.ctx.fillText(string, x, y, 40);
+     POP.ctx.textAlign = "center";
+     POP.ctx.textBaseline="middle"; 
  }
 
 };
