@@ -41,7 +41,35 @@ class Game {
 }
 
 class Bubble {
+	public $id;
+	public $userId;
+	public $gameId;
+	public $type;
+	public $time;
 	
+	public function __construct($id, $userId, $gameId, $type, $time) {
+		$this->id = $id;
+		$this->userId= $userId;
+		$this->gameId= $gameId;
+		$this->type= $type;
+		$this->time= $time;
+	}
+	
+	public function save(){
+		return MySQLAdaptor::insertBubble($this);
+	}
+	
+	public static function storeBubbles($rawBubbles, $userId, $gameId){
+		$success = true;
+		foreach($rawBubbles as $rawBubble){
+			$bubble = new Bubble(
+					$rawBubble->id, $userId, $gameId,
+					$rawBubble->type, $rawBubble->time
+					);
+			$success &= $bubble->save();
+		}
+		return $success;
+	}
 }
 
 class Interaction {
@@ -69,9 +97,9 @@ class Interaction {
 		$success = true;
 		foreach($rawInteractions as $rawInteraction){
 			$interaction = new Interaction(
-				null, $userId, $gameId, 
-				$rawInteraction->bubbleId, $rawInteraction->type, $rawInteraction->time
-			);
+					null, $userId, $gameId,
+					$rawInteraction->bubbleId, $rawInteraction->type, $rawInteraction->time
+					);
 			$success &= $interaction->save();
 		}
 		return $success;

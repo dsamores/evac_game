@@ -92,6 +92,23 @@ class MySQLAdaptor{
 			return false;
 		}
 	}
+	
+	public static function insertBubble($bubble){
+		
+		$conn = MySQLAdaptor::getConnection();
+		
+		$sql = "INSERT INTO bubble (id, userId, gameId, type, time)
+		VALUES ($bubble->id, $bubble->userId, $bubble->gameId, '$bubble->type', '$bubble->time')";
+		
+		if ($conn->query($sql) === TRUE) {
+			$conn->close();
+			return true;
+		} else {
+			echo "Error: " . $sql . "<br>" . $conn->error;
+			$conn->close();
+			return false;
+		}
+	}
 }
 
 ?>

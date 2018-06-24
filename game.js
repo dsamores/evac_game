@@ -15,6 +15,7 @@ function startGame(){
 
 function finishGame(){
 	GAME.stop = true;
+	USER.sendBubbles();
 	USER.sendInteractions();
 }
 
@@ -67,6 +68,7 @@ var USER = {
 	id: null,
 	points: null,
 	interactions: [],
+	bubbles: [],
 
 	init: function(){
 		this.id = -1;
@@ -81,6 +83,15 @@ var USER = {
 			interactions: this.interactions,
 		};
 		sendToServer('interactions', JSON.stringify(data));
+	},
+	
+	sendBubbles: function(){
+		var data = {
+			userId: USER.id,
+			gameId: GAME.id,
+			bubbles: this.bubbles,
+		};
+		sendToServer('bubbles', JSON.stringify(data));
 	},
 };
 
@@ -303,6 +314,12 @@ var POP = {
             this.time = new Date().getTime();
         };
         
+        POP.BubbleMininal = function (bubble){
+        	this.id = bubble.id;
+        	this.type = bubble.properties.action;
+            this.time = new Date().getTime();
+        };
+        
         window.addEventListener('click', function(e) {
             //POP.Input.set(e, 'tap');
         }, false);
@@ -390,7 +407,9 @@ var POP = {
 
           var keys = Object.keys(GAME.bubbleTypes);
         	var bubbleType = GAME.bubbleTypes[keys[Math.floor(keys.length * Math.random())]];
-            POP.entities.push(new POP.Bubble(bubbleType, imageType));
+        	var bubble = new POP.Bubble(bubbleType, imageType);
+            POP.entities.push(bubble);
+            USER.bubbles.push(new POP.BubbleMininal(bubble));
             GAME.showBubble = false;
 
         }

@@ -9,6 +9,13 @@ function storeInteractions($data){
 	return Interaction::storeInteractions($interactions, $userId, $gameId);
 }
 
+function storeBubbles($data){
+	$bubbles= $data->bubbles;
+	$userId = $data->userId;
+	$gameId = $data->gameId;
+	return Bubble::storeBubbles($bubbles, $userId, $gameId);
+}
+
 $request = htmlspecialchars($_GET["request"]);
 header('Content-type: application/json');
 
@@ -17,12 +24,18 @@ $data = json_decode($requestBody);
 
 switch ($request){
 	case 'interactions':
-		var_dump($data);
 		if(storeInteractions($data))
 			echo 'interactions stored';
-		else
-			echo 'Error!';
-			break;
+			else
+				echo 'Error!';
+				break;
+	case 'bubbles':
+		var_dump($data);
+		if(storeBubbles($data))
+			echo 'bubbles stored';
+			else
+				echo 'Error!';
+				break;
 	default:
 		echo 'qwerty';
 		break;

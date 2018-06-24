@@ -28,6 +28,5 @@ function sendToServer(type, data) {
   };
   xhttp.open("POST", "store_info.php?request=" + type, true);
   xhttp.setRequestHeader("Content-type", "application/json");
-  //console.log('data=asdf' + data);
   xhttp.send(data);
 }
