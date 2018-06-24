@@ -9,13 +9,26 @@ window.requestAnimFrame = (function(){
         };
 })();
 
+function startGame(){
+    POP.loop();
+}
+
+function finishGame(){
+	GAME.stop = true;
+	
+}
+
 var GAME = {
+	id: null,
+	startTime: null,
+	stop: false,
 	points: {
 		time: 3,
 		tap: 1,
 		swipe: 2,
 	},
 	showBubble: false,
+	bubbleIdGen: 1,
 	bubbleTypes: {
 		tap: {
 			points: 1,
@@ -33,11 +46,17 @@ var GAME = {
 			text: 'Swipe me ->',
 		},
 	},
+	
+	init: function(){
+		startTime = new Date().getTime();
+		requestFromServer('new_game');
+	},
 };
 
 var USER = {
 	id: null,
 	points: null,
+	interactions: [],
 
 	init: function(){
 		this.id = -1;
@@ -77,8 +96,9 @@ var POP = {
     touchType: null,
 
     init: function() {
-    	
+
     	USER.init();
+    	GAME.init();
 
         POP.RATIO = POP.WIDTH / POP.HEIGHT;
         POP.currentWidth = POP.WIDTH;
@@ -104,11 +124,14 @@ var POP = {
             x: 0,
             y: 0,
             type: null,
+            interaction: null,
     
             set: function(data, type) {
                 this.x = (data.pageX - POP.offset.left) / POP.scale;
                 this.y = (data.pageY - POP.offset.top) / POP.scale;
                 this.type = type;
+                this.interaction = new POP.Interaction(type, null);
+                USER.interactions.push(this.interaction);
             }
         };
         
@@ -179,6 +202,9 @@ var POP = {
             this.fadeRate = 0.05;
             
             this.properties = bubbleType;
+            this.id = GAME.bubbleIdGen;
+            GAME.bubbleIdGen += 1;
+            this.time = new Date().getTime();
             
             this.fade = false;
             this.remove = false;
@@ -240,6 +266,12 @@ var POP = {
             }
         };
         
+        POP.Interaction = function (type, bubbleId){
+        	this.type = type;
+        	this.bubbleId = bubbleId;
+            this.time = new Date().getTime();
+        };
+        
         window.addEventListener('click', function(e) {
             POP.Input.set(e, 'tap');
         }, false);
@@ -290,7 +322,6 @@ var POP = {
         }, {passive: false});
         
     	POP.entities.push(new POP.Score());
-        POP.loop();
     },
 
     resize: function() {
@@ -348,15 +379,18 @@ var POP = {
             	var bubble = POP.entities[i];
                 hit = POP.collides(POP.entities[i], {x: POP.Input.x, y: POP.Input.y, r: 7});
                 
-                if (hit && bubble.properties.action == POP.Input.type){
-                	POP.entities[i].action = POP.Input.type;
-                	switch(POP.Input.type){
-                	case 'tap':
-                		USER.points += GAME.points.tap;
-                		break;
-                	default:
-                		USER.points += GAME.points.swipe;
-                		break;
+                if (hit){ 
+                	POP.Input.interaction.bubbleId = bubble.id;
+                	if(bubble.properties.action == POP.Input.type){
+	                	POP.entities[i].action = POP.Input.type;
+	                	switch(POP.Input.type){
+	                	case 'tap':
+	                		USER.points += GAME.points.tap;
+	                		break;
+	                	default:
+	                		USER.points += GAME.points.swipe;
+	                		break;
+	                	}
                 	}
                 }
             }
@@ -381,6 +415,10 @@ var POP = {
     },
 
     loop: function() {
+    	
+    	if(GAME.stop){
+    		return;
+    	}
 
         requestAnimFrame( POP.loop );
 

@@ -26,6 +26,9 @@ switch ($request){
 	case 'user':
 		echo json_encode(getUser($_POST["userId"]));
 		break;
+	case 'new_game':
+		echo json_encode(getUser());
+		break;
 	case 'interactions':
 		if(storeInteractions($_POST["interactions"]))
 			echo 'success';
