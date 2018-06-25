@@ -11,6 +11,7 @@ window.requestAnimFrame = (function(){
 
 var GAME = {
 	id: null,
+	name: null,
 	startTime: null,
 	startLocation: null,
 	finishLocation: null,
@@ -57,6 +58,7 @@ var GAME = {
 		},
 	},
 	init: function(){
+		while(USER.id == -1 || USER.id == null);
 		startTime = new Date().getTime();
 		requestFromServer('new_game');
 	},
@@ -78,13 +80,30 @@ var USER = {
 	mockLocation: false,
 
 	init: function(){
-		this.id = -1;
-		this.points = 600;
-		requestFromServer('new_user');
+		this.id = this.getUserId();
+		//this.points = 600;
+		if(this.id == -1)
+			requestFromServer('new_user');
+		this.simulateLocation();
+	},
+	
+	getUserId: function(){
+		if(this.id != -1 && this.id != null)
+			return this.id;
+		if(localStorage.userId)
+			return localStorage.userId;
+		return -1;
+	},
+	
+	storeInfo: function(){
+		localStorage.userId = this.id;
+	},
+	
+	simulateLocation: function(){
 		if(this.mockLocation){
 	        setTimeout(function(){
 	    		finishGame();
-	        }, 30000);
+	        }, 120000);
 		}
 	},
 	
@@ -136,8 +155,8 @@ var POP = {
 
     init: function() {
 
-    	GAME.init();
     	USER.init();
+    	GAME.init();
 
         POP.RATIO = POP.WIDTH / POP.HEIGHT;
         POP.currentWidth = POP.WIDTH;
@@ -543,7 +562,6 @@ var POP = {
         POP.update();
         POP.render();
     }
-
 };
 
 POP.Draw = {

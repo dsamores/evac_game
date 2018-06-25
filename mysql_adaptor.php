@@ -62,11 +62,11 @@ class MySQLAdaptor{
 		}
 	}
 	
-	public static function retrieveActiveGame(){
+	public static function retrieveActiveGame($userId){
 		
 		$conn = MySQLAdaptor::getConnection();
 		
-		$sql = "SELECT * FROM game WHERE active=1";
+		$sql = "SELECT * FROM game AS g WHERE active=1 AND $userId NOT IN (SELECT userId FROM interaction WHERE gameId = g.id AND type='start') ORDER BY id";
 		$result = $conn->query($sql);
 		
 		if ($result->num_rows > 0) {
@@ -74,7 +74,7 @@ class MySQLAdaptor{
 				$conn->close();
 				$startLocation = explode(',', $row["startLocation"]);
 				$endLocation= explode(',', $row["endLocation"]);
-				return new Game($row["id"], $row["name"], $startLocation, $endLocation, $row["active"]);
+				return new Game($row["id"], $row["name"], $startLocation, $endLocation, $row["active"], $row["points"]);
 			}
 		} else {
 			$conn->close();

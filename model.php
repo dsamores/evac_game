@@ -27,17 +27,24 @@ class Game {
 	public $startLocation;
 	public $endLocation;
 	public $active;
+	public $points;
 	
-	public function __construct($id, $name, $startLocation, $endLocation, $active) {
+	public function __construct($id, $name, $startLocation, $endLocation, $active, $points) {
 		$this->id = $id;
 		$this->name = $name;
 		$this->startLocation = $startLocation;
 		$this->endLocation = $endLocation;
 		$this->active = $active;
+		$this->points= $points;
 	}
 	
-	public static function getActiveGame(){
-		return MySQLAdaptor::retrieveActiveGame();
+	public static function getActiveGame($userId, $time){
+		$activeGame = MySQLAdaptor::retrieveActiveGame($userId);
+		
+		$startInteraction = new Interaction(null, $userId, $activeGame->id, null, 'start', $time, $activeGame->startLocation[0], $activeGame->startLocation[1]);
+		$startInteraction->save();
+		
+		return $activeGame;
 	}
 	
 }

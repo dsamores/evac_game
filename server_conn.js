@@ -5,11 +5,18 @@ function requestFromServer(type) {
     	if(type == 'new_user'){
 	    	var userInfo = JSON.parse(this.responseText);
 	    	USER.id = userInfo.id;
+	    	USER.storeInfo();
     	}
     	else if(type == 'new_game'){
     		var gameInfo = JSON.parse(this.responseText);
     		if(gameInfo){
 	    		GAME.id = parseInt(gameInfo.id);
+	    		GAME.name = gameInfo.name;
+	    		USER.points = gameInfo.points;
+	    		if(GAME.name.startsWith("DEMO")){
+	    			USER.mockLocation = true;
+	    			USER.simulateLocation();
+	    		}
 	    		GAME.startLocation = gameInfo.startLocation;
 	    		GAME.finishLocation = gameInfo.endLocation;
 	    		addMarkers();
@@ -18,7 +25,9 @@ function requestFromServer(type) {
     	}
     }
   };
-  xhttp.open("GET", "get_info.php?request=" + type, true);
+  var currentTime = new Date().getTime();
+  var otherParams = type == 'new_game' ? '&user_id=' + USER.id + '&time=' + currentTime : '';
+  xhttp.open("GET", "get_info.php?request=" + type + otherParams, true);
   xhttp.send();
 }
 

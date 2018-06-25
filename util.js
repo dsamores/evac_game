@@ -41,17 +41,27 @@ function startGame(){
 }
 
 function finishGame(){
-	var postGamePage = document.getElementById('post-game');
-	var gamePage = document.getElementById('game');
-	var finalScore = document.getElementById('final_score');
-
-	gamePage.style.display = 'none';
-	postGamePage.style.display = 'block';
-	finalScore.innerHTML = USER.points;
+	USER.init();
+	GAME.init();
+	GAME.stop = false;
+	POP.entities = [];
 	
-	GAME.stop = true;
-	USER.sendBubbles();
-	USER.sendInteractions();
+	var postGamePage = document.getElementById('post-game');
+	var preGamePage = document.getElementById('pre-game');
+
+	postGamePage.style.display = 'none';
+	preGamePage.style.display = 'block';
+}
+
+function nextGame(){
+	var preGamePage = document.getElementById('pre-game');
+	var gamePage = document.getElementById('game');
+
+	preGamePage.style.display = 'none';
+	gamePage.style.display = 'block';
+	
+    mymap.invalidateSize();
+    POP.loop();
 }
 
 function hideBubbles(){

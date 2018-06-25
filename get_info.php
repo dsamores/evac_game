@@ -12,8 +12,8 @@ function getUser($id=-1){
 	return $user;
 }
 
-function getActiveGame(){
-	return Game::getActiveGame();
+function getActiveGame($userId, $time){
+	return Game::getActiveGame($userId, $time);
 }
 
 function createShapeFile($userId, $gameId){
@@ -31,7 +31,7 @@ switch ($request){
 		echo json_encode(getUser($_POST["userId"]));
 		break;
 	case 'new_game':
-		echo json_encode(getActiveGame());
+		echo json_encode(getActiveGame($_GET["user_id"], $_GET["time"]));
 		break;
 	case 'get_shapefile':
 		echo json_encode(createShapeFile($_GET["user_id"], $_GET["game_id"]));
