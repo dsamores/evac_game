@@ -16,7 +16,7 @@ var GAME = {
 	finishLocation: null,
 	stop: false,
 	points: {
-		time: 15,
+		time: 20,
 		tap: 1,
 		swipe: 2,
 	},
@@ -62,7 +62,7 @@ var USER = {
 
 	init: function(){
 		this.id = -1;
-		this.points = 5000;
+		this.points = 600;
 		requestFromServer('new_user');
 	},
 	
@@ -87,7 +87,7 @@ var USER = {
 
 setInterval(function() {
 	USER.points -= GAME.points.time;
-}, 5000);
+}, 10000);
 
 var bubbleInterval = 1000;
 var bubbleTimer = function(){

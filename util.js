@@ -3,7 +3,8 @@ function enableStart(){
 }
 
 function checkStartLocation(position){
-	if(distanceBetweenCoords(position.coords.latitude, position.coords.longitude, GAME.startLocation[0], GAME.startLocation[1]) < 10){
+	var distance = distanceBetweenCoords(position.coords.latitude, position.coords.longitude, GAME.startLocation[0], GAME.startLocation[1]);
+	if(distance < 25){
 		var startButton = document.getElementById('start');
 		startButton.style.display = 'inline-block';
 		
@@ -13,8 +14,9 @@ function checkStartLocation(position){
 	else{
 		var placeholderDiv = document.getElementById('placeholder');
 		placeholderDiv.innerHTML = "Not within start location range";
-		console.log(position.coords);
-		console.log(GAME.startLocation);
+//		console.log(position.coords);
+//		console.log(GAME.startLocation);
+//		console.log(distance);
 	}
 }
 

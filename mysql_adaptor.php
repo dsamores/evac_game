@@ -3,11 +3,19 @@
 class MySQLAdaptor{
 
 	public static function getConnection(){
-		$servername = "localhost:8887";
-		$username = "root";
-		$password = "root";
-		$dbname = "evac_game";
-		
+		$prod = false;
+		if($prod){
+			$servername = "localhost";
+			$username = "hchen";
+			$password = "ahxoh3uP";
+			$dbname = "evac_game";
+		}
+		else{
+			$servername = "localhost:8887";
+			$username = "root";
+			$password = "root";
+			$dbname = "evac_game";
+		}
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		
 		
