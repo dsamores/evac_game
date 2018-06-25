@@ -8,10 +8,13 @@ function requestFromServer(type) {
     	}
     	else if(type == 'new_game'){
     		var gameInfo = JSON.parse(this.responseText);
-    		GAME.id = parseInt(gameInfo.id);
-    		GAME.startLocation = gameInfo.startLocation;
-    		GAME.finishLocation = gameInfo.endLocation;
-    		addMarkers();
+    		if(gameInfo){
+	    		GAME.id = parseInt(gameInfo.id);
+	    		GAME.startLocation = gameInfo.startLocation;
+	    		GAME.finishLocation = gameInfo.endLocation;
+	    		addMarkers();
+	    		enableStart();
+    		}
     	}
     }
   };

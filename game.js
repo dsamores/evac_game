@@ -9,22 +9,6 @@ window.requestAnimFrame = (function(){
         };
 })();
 
-function startGame(){
-	var preGamePage = document.getElementById('pre-game');
-	var gamePage = document.getElementById('game');
-
-	preGamePage.style.display = 'none';
-	gamePage.style.display = 'block';
-    mymap.invalidateSize();
-    POP.loop();
-}
-
-function finishGame(){
-	GAME.stop = true;
-	USER.sendBubbles();
-	USER.sendInteractions();
-}
-
 var GAME = {
 	id: null,
 	startTime: null,
@@ -32,7 +16,7 @@ var GAME = {
 	finishLocation: null,
 	stop: false,
 	points: {
-		time: 3,
+		time: 15,
 		tap: 1,
 		swipe: 2,
 	},
@@ -103,7 +87,7 @@ var USER = {
 
 setInterval(function() {
 	USER.points -= GAME.points.time;
-}, 1000);
+}, 5000);
 
 var bubbleInterval = 1000;
 var bubbleTimer = function(){
