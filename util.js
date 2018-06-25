@@ -75,6 +75,25 @@ function hideBubbles(){
 	}
 }
 
+function checkText() {
+	var txt = $('#writeText').val();
+    if (txt != null && txt != "") {
+    	console.log("+10 points for you");
+		USER.points += GAME.points.writeText;
+		POP.Score.setNewPoints(GAME.points.writeText, true);
+		$('#writeTextModal').modal('toggle');
+    }
+    else{
+    	console.log("No points for you");
+    }
+}
+
+$('#takePiccie').change(function() {
+	USER.points += GAME.points.takePicture;
+	POP.Score.setNewPoints(GAME.points.takePicture, true);
+	$('#cameraModal').modal('toggle');
+});
+
 function degreesToRadians(degrees) {
   return degrees * Math.PI / 180;
 }

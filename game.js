@@ -16,9 +16,11 @@ var GAME = {
 	finishLocation: null,
 	stop: false,
 	points: {
-		time: 20,
+		time: 5,
 		tap: 1,
 		swipe: 2,
+		writeText: 5,
+		takePicture: 10,
 	},
 	showBubble: false,
 	bubbleIdGen: 1,
@@ -27,19 +29,31 @@ var GAME = {
 			points: 1,
 			action: 'tap',
 			text: 'Tap me',
-      image: 'images/Tapme.png',
+			image: 'images/Tapme.png',
 		},
 		swipeLeft: {
 			points: 2,
 			action: 'swipe-left',
 			text: 'Swipe me',
-      image: 'images/SwipeLeft.png',
+			image: 'images/SwipeLeft.png',
 		},
 		swipeRight: {
 			points: 2,
 			action: 'swipe-right',
 			text: 'Swipe me',
-      image: 'images/SwipeRight.png',
+			image: 'images/SwipeRight.png',
+		},
+		writeText: {
+			points: 5,
+			action: 'write-text',
+			text: 'Text',
+			image: 'images/Tapme.png',
+		},
+		takePicture: {
+			points: 10,
+			action: 'take-picture',
+			text: 'Pic',
+			image: 'images/Tapme.png',
 		},
 	},
 	init: function(){
@@ -61,7 +75,7 @@ var USER = {
 	currentLon: null,
 	interactions: [],
 	bubbles: [],
-	mockLocation: false,
+	mockLocation: true,
 
 	init: function(){
 		this.id = -1;
@@ -98,7 +112,6 @@ setInterval(function() {
 	POP.Score.setNewPoints(GAME.points.time, false);
 }, 5000);
 
-var bubbleInterval = 2000;
 var bubbleTimer = setInterval(function(){
 	GAME.showBubble = true;
 }, 3000);
@@ -142,9 +155,6 @@ var POP = {
         POP.resize();
 
         POP.Draw.clear();
-        /* POP.Draw.rect(120,120,150,150, 'green');
-        POP.Draw.circle(100, 100, 50, 'rgba(255,0,0,0.5)');
-        POP.Draw.text('Hello World', 100, 100, 10, '#000'); */
 
         POP.Input = {
             x: 0,
@@ -279,7 +289,7 @@ var POP = {
 
             this.run = setTimeout(function(){
             	self.fade = true;
-            }, 2000);
+            }, 2800);
 
             this.update = function() {
 
@@ -308,6 +318,12 @@ var POP = {
                         this.remove = true;
                     }
                 }
+                else if(this.action == 'write-text'){
+                	this.remove = true;
+                }
+                else if(this.action == 'take-picture'){
+                	this.remove = true;
+                }
 
             };
 
@@ -316,9 +332,8 @@ var POP = {
                 POP.Draw.image(imageType, this.x - 31, this.y-31, this.opacity);
                 POP.Draw.text(this.properties.text, this.x, this.y - 9, 12, 'rgba(0,0,0,'+this.opacity+')');
                 POP.Draw.text('+' + this.properties.points, this.x + 2, this.y + 5, 14, 'rgba(0,0,0,'+this.opacity+')');
-                if (this.properties.action == 'swipe-left' || this.properties.action =='swipe-right' || this.properties.action =='tap'){
-                  POP.Draw.image(this.properties.image, this.x - 19, this.y, this.opacity);
-                }
+                POP.Draw.image(this.properties.image, this.x - 19, this.y, this.opacity);
+                
             };
         };
 
@@ -469,12 +484,25 @@ var POP = {
    
                 if (hit){ 
                 	POP.Input.interaction.bubbleId = bubble.id;
-                	if(bubble.properties.action == POP.Input.type){
+                	var expectedAction = bubble.properties.action;
+                	if(expectedAction == 'write-text' || expectedAction == 'take-picture')
+                		expectedAction = 'tap';
+                	if(expectedAction == POP.Input.type){
 	                	POP.entities[i].action = POP.Input.type;
 	                	switch(POP.Input.type){
 	                	case 'tap':
-	                		USER.points += GAME.points.tap;
-	                		POP.Score.setNewPoints(GAME.points.tap, true);
+	                		if(bubble.properties.action == 'write-text'){
+	                			$("#writeTextModal").modal();
+	                		}
+	                		else if(bubble.properties.action == 'take-picture'){
+	                			//$('#takePiccie')[0].click();
+	                			$("#cameraModal").modal();
+	                			console.log('dfghdfgh');
+	                		}
+	                		else{
+		                		USER.points += GAME.points.tap;
+		                		POP.Score.setNewPoints(GAME.points.tap, true);
+	                		}
 	                		break;
 	                	default:
 	                		USER.points += GAME.points.swipe;
