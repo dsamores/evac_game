@@ -88,8 +88,8 @@ class MySQLAdaptor{
 		
 		$bubbleId = $interaction->bubbleId ? $interaction->bubbleId : 'null';
 		
-		$sql = "INSERT INTO interaction (userId, gameId, bubbleId, type, time)
-		VALUES ($interaction->userId, $interaction->gameId, $bubbleId, '$interaction->type', '$interaction->time')";
+		$sql = "INSERT INTO interaction (userId, gameId, bubbleId, type, time, latitude, longitude)
+		VALUES ($interaction->userId, $interaction->gameId, $bubbleId, '$interaction->type', '$interaction->time', $interaction->latitude, $interaction->longitude)";
 		
 		if ($conn->query($sql) === TRUE) {
 			$conn->close();

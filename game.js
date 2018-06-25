@@ -57,6 +57,8 @@ var GAME = {
 var USER = {
 	id: null,
 	points: null,
+	currentLat: null,
+	currentLon: null,
 	interactions: [],
 	bubbles: [],
 
@@ -302,6 +304,8 @@ var POP = {
         	this.type = type;
         	this.bubbleId = bubbleId;
             this.time = new Date().getTime();
+            this.latitude = USER.currentLat;
+            this.longitude = USER.currentLon;
         };
         
         POP.BubbleMininal = function (bubble){
@@ -352,10 +356,14 @@ var POP = {
             initialY = null;
         }, {passive: false});
         window.addEventListener('touchend', function(e) {
-            if(POP.touchType == null)
+            if(POP.touchType == null){
             	POP.Input.set(e.changedTouches[0], 'tap');
-            else
+            	console.log('tap');
+            }
+            else{
             	POP.Input.set(POP.initialTouch, POP.touchType);
+            	console.log(POP.touchType);
+            }
             POP.touchType = null;
         }, {passive: false});
 

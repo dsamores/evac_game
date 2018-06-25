@@ -59,3 +59,7 @@ input[type=button] {
 #start{
 	display: none;
 }
+#post-game{
+	display: none;
+	color: white;
+}

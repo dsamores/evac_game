@@ -25,6 +25,15 @@ mymap.on("locationfound", function(location) {
     
     marker.setLatLng(location.latlng);
     marker.setAccuracy(location.accuracy);
+
+    USER.currentLat = location.latlng.lat;
+    USER.currentLon = location.latlng.lng;
+    
+	var distance = distanceBetweenCoords(location.latlng.lat, location.latlng.lng, GAME.finishLocation[0], GAME.finishLocation[1]);
+	if (distance < 10){
+		finishGame();
+	}
+    
 });
 
 mymap.locate({

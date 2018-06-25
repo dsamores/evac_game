@@ -24,18 +24,18 @@ $data = json_decode($requestBody);
 
 switch ($request){
 	case 'interactions':
+		//var_dump($data);
 		if(storeInteractions($data))
 			echo 'interactions stored';
-			else
-				echo 'Error!';
-				break;
+		else
+			echo 'Error!';
+		break;
 	case 'bubbles':
-		var_dump($data);
 		if(storeBubbles($data))
 			echo 'bubbles stored';
-			else
-				echo 'Error!';
-				break;
+		else
+			echo 'Error!';
+		break;
 	default:
 		echo 'qwerty';
 		break;

@@ -26,11 +26,20 @@ function startGame(){
 
 	preGamePage.style.display = 'none';
 	gamePage.style.display = 'block';
+	
     mymap.invalidateSize();
     POP.loop();
 }
 
 function finishGame(){
+	var postGamePage = document.getElementById('post-game');
+	var gamePage = document.getElementById('game');
+	var finalScore = document.getElementById('final_score');
+
+	gamePage.style.display = 'none';
+	postGamePage.style.display = 'block';
+	finalScore.innetHTML = USER.points;
+	
 	GAME.stop = true;
 	USER.sendBubbles();
 	USER.sendInteractions();

@@ -79,14 +79,18 @@ class Interaction {
 	public $bubbleId;
 	public $type;
 	public $time;
+	public $latitude;
+	public $longitude;
 	
-	public function __construct($id, $userId, $gameId, $bubbleId, $type, $time) {
+	public function __construct($id, $userId, $gameId, $bubbleId, $type, $time, $latitude, $longitude) {
 		$this->id = $id;
 		$this->userId= $userId;
 		$this->gameId= $gameId;
 		$this->bubbleId= $bubbleId;
 		$this->type= $type;
 		$this->time= $time;
+		$this->latitude= $latitude;
+		$this->longitude= $longitude;
 	}
 	
 	public function save(){
@@ -97,9 +101,10 @@ class Interaction {
 		$success = true;
 		foreach($rawInteractions as $rawInteraction){
 			$interaction = new Interaction(
-					null, $userId, $gameId,
-					$rawInteraction->bubbleId, $rawInteraction->type, $rawInteraction->time
-					);
+				null, $userId, $gameId, $rawInteraction->bubbleId,
+				$rawInteraction->type, $rawInteraction->time,
+				$rawInteraction->latitude, $rawInteraction->longitude
+			);
 			$success &= $interaction->save();
 		}
 		return $success;
