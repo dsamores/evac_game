@@ -75,7 +75,7 @@ var USER = {
 	currentLon: null,
 	interactions: [],
 	bubbles: [],
-	mockLocation: true,
+	mockLocation: false,
 
 	init: function(){
 		this.id = -1;

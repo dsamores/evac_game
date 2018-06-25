@@ -33,6 +33,7 @@ mymap.on("locationfound", function(location) {
 	var distance = distanceBetweenCoords(USER.currentLat, USER.currentLon, GAME.finishLocation[0], GAME.finishLocation[1]);
 	if (distance < 10){
 		finishGame();
+		mymap.stopLocate();
 	}
     
 });
