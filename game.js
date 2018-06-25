@@ -70,7 +70,7 @@ var USER = {
 		if(this.mockLocation){
 	        setTimeout(function(){
 	    		finishGame();
-	        }, 20000);
+	        }, 30000);
 		}
 	},
 	
@@ -180,6 +180,7 @@ var POP = {
                 POP.Draw.rect(0, 0, POP.WIDTH, 50, '#333');
                 POP.Draw.image(this.binocular, POP.WIDTH - 315, 10, 1.0);
                 POP.Draw.image(this.idcard, POP.WIDTH - 180, 10, 1.0);
+                POP.Draw.text(USER.id, POP.WIDTH - 130, 30, 20, '#fff');
                 POP.Draw.image(this.medal, POP.WIDTH - 90, 10, 1.0);
                 POP.Draw.text(USER.points, POP.WIDTH - 30, 30, 20, '#fff');
               };
@@ -285,8 +286,8 @@ var POP = {
             this.render = function() {
                 //POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,255,255,'+this.opacity+')');
                 POP.Draw.image(imageType, this.x - 31, this.y-31, this.opacity);
-                POP.Draw.text(this.properties.text, this.x, this.y - 9, 12, '#000');
-                POP.Draw.text('+' + this.properties.points, this.x + 2, this.y + 5, 14, '#000');
+                POP.Draw.text(this.properties.text, this.x, this.y - 9, 12, 'rgba(0,0,0,'+this.opacity+')');
+                POP.Draw.text('+' + this.properties.points, this.x + 2, this.y + 5, 14, 'rgba(0,0,0,'+this.opacity+')');
                 if (this.properties.action == 'swipe-left' || this.properties.action =='swipe-right' || this.properties.action =='tap'){
                   POP.Draw.image(this.properties.image, this.x - 19, this.y, this.opacity);
                 }
@@ -515,10 +516,12 @@ POP.Draw = {
   },
 
  image: function(string, x, y, alpha) {
+	 POP.ctx.save();
      POP.ctx.globalAlpha = alpha;
      var img = new Image();
      img.src = string;
      POP.ctx.drawImage(img, x, y);
+     POP.ctx.restore();
    },
 };
 
