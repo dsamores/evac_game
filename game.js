@@ -95,6 +95,7 @@ var USER = {
 
 setInterval(function() {
 	USER.points -= GAME.points.time;
+	POP.Score.setNewPoints(GAME.points.time, false);
 }, 5000);
 
 var bubbleInterval = 2000;
@@ -160,27 +161,57 @@ var POP = {
             }
         };
 
-        POP.Score = function() {
+        POP.Score = {
 
-            this.type = 'score';
-            this.remove = false;
-            this.idcard = 'images/idcard.png';
-            this.binocular = 'images/binoculars.png',
-            this.mail = 'images/mail.png';
-            this.medal = 'images/medal.png';
+            type: 'score',
+            remove: false,
+            idcard: 'images/idcard.png',
+            binocular: 'images/binoculars.png',
+            mail: 'images/mail.png',
+            medal: 'images/medal.png',
+            y: 30,
+            points: null,
+            won: null,
+            pointsChanged: false,
+            color: '255,255,0',
+            opacity: 0, 
+            
+            setNewPoints: function (points, won){
+            	POP.Score.points = points;
+            	POP.Score.won = won;
+            	POP.Score.pointsChanged = true;
+            	POP.Score.y = 30;
+            	POP.Score.opacity = 1;
+            	POP.Score.color = POP.Score.won ? '0,128,0' : '255,0,0';
+            },
 
-            this.update = function() {
+            update: function() {
+            	if(POP.Score.pointsChanged){
+	            	if(POP.Score.won){
+	            		POP.Score.y -= 2;
+	            		if(POP.Score.y < -20){
+	            			POP.Score.pointsChanged = false;
+	            			POP.Score.opacity = 0;
+	            		}
+	            	}
+	            	else{
+	            		POP.Score.y += 2;
+	            		if(POP.Score.y > 70){
+	            			POP.Score.pointsChanged = false;
+	            			POP.Score.opacity = 0;
+	            		}
+	            	}
+            	}
+            },
 
-            };
-
-            this.render = function() {
+            render: function() {
                 POP.Draw.rect(0, 0, POP.WIDTH, 50, '#333');
-                // POP.Draw.image(this.binocular, POP.WIDTH - 315, 10, 1.0);
-                POP.Draw.image(this.idcard, POP.WIDTH - 180, 10, 1.0);
-                POP.Draw.text(USER.id, POP.WIDTH - 130, 30, 20, '#fff');
-                POP.Draw.image(this.medal, POP.WIDTH - 90, 10, 1.0);
-                POP.Draw.text(USER.points, POP.WIDTH - 30, 30, 20, '#fff');
-              };
+                POP.Draw.image(POP.Score.idcard, 60, 10, 1.0);
+                POP.Draw.text(USER.id, 110, 30, 20, '#fff');
+                POP.Draw.image(POP.Score.medal, POP.WIDTH - 130, 10, 1.0);
+                POP.Draw.text(USER.points, POP.WIDTH - 70, 30, 20, '#fff');
+                POP.Draw.text((POP.Score.won ? '+' : '-') + POP.Score.points, POP.WIDTH - 30, POP.Score.y, 30, 'rgb(' + POP.Score.color + ', ' + POP.Score.opacity + ')');
+              },
 
 
         };
@@ -369,7 +400,7 @@ var POP = {
             POP.touchType = null;
         }, {passive: false});
 
-    	POP.entities.push(new POP.Score());
+    	POP.entities.push(POP.Score);
     },
 
     resize: function() {
@@ -443,9 +474,11 @@ var POP = {
 	                	switch(POP.Input.type){
 	                	case 'tap':
 	                		USER.points += GAME.points.tap;
+	                		POP.Score.setNewPoints(GAME.points.tap, true);
 	                		break;
 	                	default:
 	                		USER.points += GAME.points.swipe;
+                			POP.Score.setNewPoints(GAME.points.swipe, true);
 	                		break;
 	                	}
                 	}
