@@ -61,11 +61,17 @@ var USER = {
 	currentLon: null,
 	interactions: [],
 	bubbles: [],
+	mockLocation: false,
 
 	init: function(){
 		this.id = -1;
 		this.points = 600;
 		requestFromServer('new_user');
+		if(this.mockLocation){
+	        setTimeout(function(){
+	    		finishGame();
+	        }, 20000);
+		}
 	},
 	
 	sendInteractions: function(){
@@ -89,9 +95,9 @@ var USER = {
 
 setInterval(function() {
 	USER.points -= GAME.points.time;
-}, 10000);
+}, 5000);
 
-var bubbleInterval = 1000;
+var bubbleInterval = 2000;
 var bubbleTimer = function(){
 	GAME.showBubble = true;
 	setTimeout(bubbleTimer, bubbleInterval * (1 + Math.random()));
@@ -119,8 +125,8 @@ var POP = {
 
     init: function() {
 
-    	USER.init();
     	GAME.init();
+    	USER.init();
 
         POP.RATIO = POP.WIDTH / POP.HEIGHT;
         POP.currentWidth = POP.WIDTH;
@@ -358,11 +364,9 @@ var POP = {
         window.addEventListener('touchend', function(e) {
             if(POP.touchType == null){
             	POP.Input.set(e.changedTouches[0], 'tap');
-            	console.log('tap');
             }
             else{
             	POP.Input.set(POP.initialTouch, POP.touchType);
-            	console.log(POP.touchType);
             }
             POP.touchType = null;
         }, {passive: false});
@@ -399,15 +403,18 @@ var POP = {
 
     update: function() {
 
+    	var numConcurrentBubbles = 3;
         if (GAME.showBubble) {
-          var keys_imgs = Object.keys(GAME.imageTypes);
-        	var imageType = GAME.imageTypes[keys_imgs[Math.floor(keys_imgs.length * Math.random())]];
-
-          var keys = Object.keys(GAME.bubbleTypes);
-        	var bubbleType = GAME.bubbleTypes[keys[Math.floor(keys.length * Math.random())]];
-        	var bubble = new POP.Bubble(bubbleType, imageType);
-            POP.entities.push(bubble);
-            USER.bubbles.push(new POP.BubbleMininal(bubble));
+        	for(var i = 0; i < numConcurrentBubbles; i++){
+	        	var keys_imgs = Object.keys(GAME.imageTypes);
+	        	var imageType = GAME.imageTypes[keys_imgs[Math.floor(keys_imgs.length * Math.random())]];
+	
+	        	var keys = Object.keys(GAME.bubbleTypes);
+	        	var bubbleType = GAME.bubbleTypes[keys[Math.floor(keys.length * Math.random())]];
+	        	var bubble = new POP.Bubble(bubbleType, imageType);
+	            POP.entities.push(bubble);
+	            USER.bubbles.push(new POP.BubbleMininal(bubble));
+        	}
             GAME.showBubble = false;
 
         }

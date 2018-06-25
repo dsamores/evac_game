@@ -3,7 +3,16 @@ function enableStart(){
 }
 
 function checkStartLocation(position){
-	var distance = distanceBetweenCoords(position.coords.latitude, position.coords.longitude, GAME.startLocation[0], GAME.startLocation[1]);
+	if(USER.mockLocation){
+	    USER.currentLat = GAME.startLocation[0];
+	    USER.currentLon = GAME.startLocation[1];
+	}
+	else{
+	    USER.currentLat = position.coords.latitude;
+	    USER.currentLon = position.coords.longitude;
+	}
+	
+	var distance = distanceBetweenCoords(USER.currentLat, USER.currentLon, GAME.startLocation[0], GAME.startLocation[1]);
 	if(distance < 25){
 		var startButton = document.getElementById('start');
 		startButton.style.display = 'inline-block';
@@ -38,7 +47,7 @@ function finishGame(){
 
 	gamePage.style.display = 'none';
 	postGamePage.style.display = 'block';
-	finalScore.innetHTML = USER.points;
+	finalScore.innerHTML = USER.points;
 	
 	GAME.stop = true;
 	USER.sendBubbles();

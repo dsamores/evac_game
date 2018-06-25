@@ -3,7 +3,7 @@
 class MySQLAdaptor{
 
 	public static function getConnection(){
-		$prod = false;
+		$prod = true;
 		if($prod){
 			$servername = "localhost";
 			$username = "hchen";
