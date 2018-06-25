@@ -54,6 +54,27 @@ function finishGame(){
 	USER.sendInteractions();
 }
 
+function hideBubbles(){
+	var hideButton = document.getElementById('hideBubbles');
+	if(hideButton.value == 1){
+		hideButton.src = 'images/binoculargrey.png';
+		hideButton.value = 0;
+		for (i = 0; i < POP.entities.length; i += 1) {
+            if (POP.entities[i].type === 'bubble') {
+            	POP.entities[i].remove = true;
+            }
+        }
+		clearInterval(bubbleTimer);
+	}
+	else{
+		hideButton.src = 'images/binoculars.png';
+		hideButton.value = 1;
+		bubbleTimer = setInterval(function(){
+			GAME.showBubble = true;
+		}, 3000);
+	}
+}
+
 function degreesToRadians(degrees) {
   return degrees * Math.PI / 180;
 }

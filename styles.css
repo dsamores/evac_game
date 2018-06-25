@@ -63,3 +63,10 @@ input[type=button] {
 	display: none;
 	color: white;
 }
+#hideBubbles{
+	position: absolute;
+    top: 10px;
+    left: 5px;
+    z-index: 30;
+    width: 40px;
+}

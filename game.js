@@ -98,12 +98,9 @@ setInterval(function() {
 }, 5000);
 
 var bubbleInterval = 2000;
-var bubbleTimer = function(){
+var bubbleTimer = setInterval(function(){
 	GAME.showBubble = true;
-	setTimeout(bubbleTimer, bubbleInterval * (1 + Math.random()));
-};
-
-setTimeout(bubbleTimer, bubbleInterval * (1 + Math.random()));
+}, 3000);
 
 
 var POP = {
@@ -178,7 +175,7 @@ var POP = {
 
             this.render = function() {
                 POP.Draw.rect(0, 0, POP.WIDTH, 50, '#333');
-                POP.Draw.image(this.binocular, POP.WIDTH - 315, 10, 1.0);
+                // POP.Draw.image(this.binocular, POP.WIDTH - 315, 10, 1.0);
                 POP.Draw.image(this.idcard, POP.WIDTH - 180, 10, 1.0);
                 POP.Draw.text(USER.id, POP.WIDTH - 130, 30, 20, '#fff');
                 POP.Draw.image(this.medal, POP.WIDTH - 90, 10, 1.0);
