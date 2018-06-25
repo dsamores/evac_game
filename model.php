@@ -1,6 +1,8 @@
 <?php
 require 'mysql_adaptor.php';
 
+require_once('ShapeFile.lib.php');
+
 class User {
 	public $id;
 	public $age;
@@ -108,5 +110,27 @@ class Interaction {
 			$success &= $interaction->save();
 		}
 		return $success;
+	}
+	
+	public static function createShapefile($userId, $gameId){
+		$interactions = MySQLAdaptor::retrieveInteractions($userId, $gameId);
+		$geojson = array(
+				'type'      => 'FeatureCollection',
+				'features'  => array()
+		);
+		foreach ($interactions as $interaction){
+			$feature = array(
+					'type' => 'Feature',
+					'geometry' => array(
+							'type' => 'Point',
+							'coordinates' => array(floatval($interaction->longitude), floatval($interaction->latitude))
+					),
+					'properties' => array(
+							'type' => $interaction->type,
+					)
+			);
+			array_push($geojson['features'], $feature);
+		}
+		return $geojson;
 	}
 }

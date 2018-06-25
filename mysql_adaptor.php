@@ -117,6 +117,27 @@ class MySQLAdaptor{
 			return false;
 		}
 	}
+	
+	public static function retrieveInteractions($userId, $gameId){
+		$conn = MySQLAdaptor::getConnection();
+		
+		$sql = "SELECT * FROM interaction WHERE userId=$userId AND gameId=$gameId";
+		$result = $conn->query($sql);
+		$interactions = [];
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {
+				$conn->close();
+				array_push($interactions, new Interaction(
+						$row["id"], $row["userId"], $row["gameId"], $row["bubbleId"], 
+						$row["type"], $row["time"], $row["latitude"], $row["longitude"]
+					)
+				);
+			}
+		} else {
+			$conn->close();
+		}
+		return $interactions;
+	}
 }
 
 ?>

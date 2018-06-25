@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body>
+
+<form action="get_info.php" method="get" style="width: 200px; margin:50px auto;">
+  <div class="form-group">
+    <label for="user_id">User ID:</label>
+    <input type="text" class="form-control" id="user_id" name="user_id">
+  </div>
+  <div class="form-group">
+    <label for="game_id">Game ID:</label>
+    <input type="text" class="form-control" id="game_id" name="game_id">
+  </div>
+  <input type="button" class="btn btn-default" value="Download GeoJson" onclick="requestFromServer()"/>
+  <input type="button" class="btn btn-default" value="Download Shapefile" onclick="requestFromServer2()"/>
+</form>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="shpwrite.js"></script>
+
+<script>
+
+
+function download(filename, text) {
+	  var element = document.createElement('a');
+	  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+	  element.setAttribute('download', filename);
+
+	  element.style.display = 'none';
+	  document.body.appendChild(element);
+
+	  element.click();
+
+	  document.body.removeChild(element);
+	}
+	
+function requestFromServer() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		download('my_game.geojson', this.responseText);
+    }
+  };
+  xhttp.open("GET", "get_info.php?request=get_shapefile&user_id=" + $('#user_id').val() + "&game_id=" + $('#game_id').val(), true);
+  xhttp.send();
+}
+	
+function requestFromServer2() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	    var geoJson = JSON.parse(this.responseText);
+	    shpwrite.download(geoJson);
+		//download('my_game.geojson', this.responseText);
+    }
+  };
+  xhttp.open("GET", "get_info.php?request=get_shapefile&user_id=" + $('#user_id').val() + "&game_id=" + $('#game_id').val(), true);
+  xhttp.send();
+}
+
+</script>
+</body>
+</html>

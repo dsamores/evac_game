@@ -16,8 +16,12 @@ function getActiveGame(){
 	return Game::getActiveGame();
 }
 
-$request = htmlspecialchars($_GET["request"]);
+function createShapeFile($userId, $gameId){
+	return Interaction::createShapeFile($userId, $gameId);
+}
+
 header('Content-type: application/json');
+$request = htmlspecialchars($_GET["request"]);
 
 switch ($request){
 	case 'new_user':
@@ -28,6 +32,9 @@ switch ($request){
 		break;
 	case 'new_game':
 		echo json_encode(getActiveGame());
+		break;
+	case 'get_shapefile':
+		echo json_encode(createShapeFile($_GET["user_id"], $_GET["game_id"]));
 		break;
 	default:
 		echo 'qwerty';
