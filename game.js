@@ -10,6 +10,12 @@ window.requestAnimFrame = (function(){
 })();
 
 function startGame(){
+	var preGamePage = document.getElementById('pre-game');
+	var gamePage = document.getElementById('game');
+
+	preGamePage.style.display = 'none';
+	gamePage.style.display = 'block';
+    mymap.invalidateSize();
     POP.loop();
 }
 
