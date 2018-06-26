@@ -60,7 +60,15 @@ var GAME = {
 	init: function(){
 		while(USER.id == -1 || USER.id == null);
 		startTime = new Date().getTime();
-		requestFromServer('new_game');
+		if(localStorage.gameId){
+			 this.id = localStorage.gameId;
+			 this.name = localStorage.gameName;
+			 this.startLocation = localStorage.gameStartLocation;
+			 this.finishLocation = localStorage.gameStartLocation;
+		}
+		else{
+			requestFromServer('new_game');
+		}
 	},
   imageTypes: {
     yellowenvelope: 'images/yenvelope.png',
@@ -68,6 +76,18 @@ var GAME = {
     blueenvelope: 'images/benvelope.png',
     orangeenvelope: 'images/oenvelope.png',
   },
+	clearInfo: function(){
+		  localStorage.removeItem('gameId');
+		  localStorage.removeItem('gameName');
+		  localStorage.removeItem('gameStartLocation');
+		  localStorage.removeItem('gameStartLocation');
+	},
+	storeInfo: function(){
+		localStorage.gameId = this.id;
+		localStorage.gameName = this.name;
+		localStorage.gameStartLocation = this.startLocation;
+		localStorage.gameStartLocation = this.finishLocation;
+	},
 };
 
 var USER = {

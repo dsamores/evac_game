@@ -1,5 +1,11 @@
 function enableStart(){
 	navigator.geolocation.getCurrentPosition(checkStartLocation);
+
+	mymap.locate({
+	    watch: true,
+	    setView: false,
+	    enableHighAccuracy: true
+	});
 }
 
 function checkStartLocation(position){
@@ -61,6 +67,7 @@ function nextGame(){
 	gamePage.style.display = 'block';
 	
     mymap.invalidateSize();
+    GAME.clearInfo();
     POP.loop();
 }
 

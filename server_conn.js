@@ -8,6 +8,7 @@ function requestFromServer(type) {
 	    	USER.storeInfo();
     	}
     	else if(type == 'new_game'){
+    		console.log(this.responseText);
     		var gameInfo = JSON.parse(this.responseText);
     		if(gameInfo){
 	    		GAME.id = parseInt(gameInfo.id);
@@ -21,6 +22,7 @@ function requestFromServer(type) {
 	    		GAME.finishLocation = gameInfo.endLocation;
 	    		addMarkers();
 	    		enableStart();
+	    		GAME.storeInfo();
     		}
     	}
     }
