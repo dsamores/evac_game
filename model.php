@@ -125,7 +125,9 @@ class Interaction {
 				'type'      => 'FeatureCollection',
 				'features'  => array()
 		);
+		$coordinates = [];
 		foreach ($interactions as $interaction){
+			$date = date("d-m-Y", ((int)$interaction->time) / 1000);
 			$feature = array(
 					'type' => 'Feature',
 					'geometry' => array(
@@ -134,10 +136,22 @@ class Interaction {
 					),
 					'properties' => array(
 							'type' => $interaction->type,
+							'time' => $date,
 					)
 			);
 			array_push($geojson['features'], $feature);
+			array_push($coordinates, array(floatval($interaction->longitude), floatval($interaction->latitude)));
 		}
+		$featureLine = array(
+				'type' => 'Feature',
+				'geometry' => array(
+						'type' => 'LineString',
+						'coordinates' => $coordinates
+				),
+				'properties' => array(
+				)
+		);
+		array_push($geojson['features'], $featureLine);
 		return $geojson;
 	}
 }

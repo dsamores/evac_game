@@ -14,6 +14,7 @@ function requestFromServer(type) {
 	    		GAME.id = parseInt(gameInfo.id);
 	    		GAME.name = gameInfo.name;
 	    		USER.points = gameInfo.points;
+    			USER.mockLocation = false;
 	    		if(GAME.name.startsWith("DEMO")){
 	    			USER.mockLocation = true;
 	    			USER.simulateLocation();
@@ -22,7 +23,6 @@ function requestFromServer(type) {
 	    		GAME.finishLocation = gameInfo.endLocation;
 	    		addMarkers();
 	    		enableStart();
-	    		GAME.storeInfo();
     		}
     	}
     }
