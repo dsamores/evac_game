@@ -1,10 +1,15 @@
 var mymap = L.map('mapid', {zoomControl: false, dragging: false}).setView([-37.796772, 144.963654], 15);
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFtb3JlcyIsImEiOiJjamlwbDhmbjIweTNuM2tvNzhmOHMyMHc4In0.5J2Vqh0EG8gAVjEWGxnNBw', {
-    attribution: 'David &hearts;\'s  &copy;',
-    maxZoom: 20,
-    id: 'mapbox.streets',
-    accessToken: 'pk.eyJ1IjoiZGFtb3JlcyIsImEiOiJjamlwbDhmbjIweTNuM2tvNzhmOHMyMHc4In0.5J2Vqh0EG8gAVjEWGxnNBw'
+//L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFtb3JlcyIsImEiOiJjamlwbDhmbjIweTNuM2tvNzhmOHMyMHc4In0.5J2Vqh0EG8gAVjEWGxnNBw', {
+//    attribution: '',
+//    maxZoom: 20,
+//    id: 'mapbox.streets',
+//    accessToken: 'pk.eyJ1IjoiZGFtb3JlcyIsImEiOiJjamlwbDhmbjIweTNuM2tvNzhmOHMyMHc4In0.5J2Vqh0EG8gAVjEWGxnNBw'
+//}).addTo(mymap);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(mymap);
 
 L.control.zoom({
@@ -31,7 +36,7 @@ mymap.on("locationfound", function(location) {
     }
     
 	var distance = distanceBetweenCoords(USER.currentLat, USER.currentLon, GAME.finishLocation[0], GAME.finishLocation[1]);
-	if (distance < 10){
+	if (distance < 30){
 		finishGame();
 		mymap.stopLocate();
 	}

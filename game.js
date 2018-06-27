@@ -1,3 +1,4 @@
+
 window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame   ||
         window.webkitRequestAnimationFrame ||
@@ -58,7 +59,6 @@ var GAME = {
 		},
 	},
 	init: function(){
-		while(USER.id == -1 || USER.id == null);
 		startTime = new Date().getTime();
 		requestFromServer('new_game');
 	},
@@ -84,6 +84,8 @@ var USER = {
 		//this.points = 600;
 		if(this.id == -1)
 			requestFromServer('new_user');
+		else
+			GAME.init();
 		this.simulateLocation();
 	},
 	
@@ -156,7 +158,7 @@ var POP = {
     init: function() {
 
     	USER.init();
-    	GAME.init();
+    	//GAME.init();
 
         POP.RATIO = POP.WIDTH / POP.HEIGHT;
         POP.currentWidth = POP.WIDTH;
@@ -407,6 +409,7 @@ var POP = {
             if (Math.abs(diffX) > Math.abs(diffY)) {
                 if (diffX > 0) {
                 	POP.touchType = 'swipe-left';
+                	console.log('swipeleft');
                 }
                 else {
                 	POP.touchType = 'swipe-right';

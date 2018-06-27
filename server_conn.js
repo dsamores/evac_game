@@ -6,9 +6,11 @@ function requestFromServer(type) {
 	    	var userInfo = JSON.parse(this.responseText);
 	    	USER.id = userInfo.id;
 	    	USER.storeInfo();
+	    	Game.init();
     	}
     	else if(type == 'new_game'){
-    		console.log(this.responseText);
+    		var startButton = document.getElementById('start');
+    		startButton.style.display = 'none';
     		var gameInfo = JSON.parse(this.responseText);
     		if(gameInfo){
 	    		GAME.id = parseInt(gameInfo.id);

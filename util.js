@@ -61,10 +61,11 @@ function finishGame(){
 }
 
 function nextGame(){
-	USER.init();
-	GAME.init();
+	USER.mockLocation = false;
 	GAME.stop = false;
 	POP.entities = [];
+	POP.entities.push(POP.Score);
+	USER.init();
 	
 	var postGamePage = document.getElementById('post-game');
 	var preGamePage = document.getElementById('pre-game');
@@ -109,6 +110,7 @@ function checkText() {
     else{
     	console.log("No points for you");
     }
+    $('#writeText').val('');
 }
 
 $('#takePiccie').change(function() {
